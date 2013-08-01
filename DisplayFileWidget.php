@@ -1,6 +1,6 @@
 <?php
 /*
-Plugin Name: Display external webpage content widget
+Plugin Name: Display webpage content widget
 Plugin URI: 
 Version: 1.0
 Description: Output contents of a file via url
