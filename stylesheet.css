@@ -1,27 +1,2 @@
-
 /* CSS FOR DISPLAY FILE WIDGET */
 
-
-/* CUSTOM CSS for the project I was working on */
-
-#box-libraries-and-collections, #box-libraries-and-collections p {
-	font-size: 13px;
-	margin: 0 0 10px;
-}
-
-#box-libraries-and-collections a {
-	font-size: 13px;
-}
-
-#box-libraries-and-collections li {
-	font-size: 12px;
-/*  font-weight: bold;*/
-}
-
-#box-libraries-and-collections .subbranch {
-	margin-left: 10px;
-}
-
-#box-libraries-and-collections ul .subbranch  {
-/*	list-style-type: square;*/
-}
