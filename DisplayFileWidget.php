@@ -8,7 +8,7 @@ Author: Ali Sadaqain
 Author URI: http://www.library.yorku.ca
 */
  
-class Hours_Widget extends WP_Widget
+class Display_File_Widget extends WP_Widget
 {
   function Display_File_Widget()
   {
@@ -49,7 +49,7 @@ class Hours_Widget extends WP_Widget
  
     echo $before_widget;
     $title = empty($instance['title']) ? '' : apply_filters('widget_title', $instance['title']);
-    $hours_url = empty($instance['web_url']) ? '' : $instance['web_url'];
+    $web_url = empty($instance['web_url']) ? '' : $instance['web_url'];
     
     if (!empty($title))
       echo $before_title . $title . $after_title;; 
