@@ -1,11 +1,11 @@
 <?php
 /*
 Plugin Name: Display File Widget
-Plugin URI: 
+Plugin URI: https://github.com/asadaqain/display_file_widget
 Version: 1.0
 Description: Output contents of a file via url or local /path/to/file.
 Author: Ali Sadaqain
-Author URI: http://www.library.yorku.ca
+Author URI: https://github.com/asadaqain/display_file_widget
 */
  
 class Display_File_Widget extends WP_Widget
