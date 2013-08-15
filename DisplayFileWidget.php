@@ -1,9 +1,9 @@
 <?php
 /*
-Plugin Name: Display webpage content widget
+Plugin Name: Display File Widget
 Plugin URI: 
 Version: 1.0
-Description: Output contents of a file via url
+Description: Output contents of a file via url or local /path/to/file.
 Author: Ali Sadaqain
 Author URI: http://www.library.yorku.ca
 */
@@ -24,13 +24,13 @@ class Display_File_Widget extends WP_Widget
    
   function form($instance)
   {
-    $instance = wp_parse_args((array) $instance, array( 'title' => '', 'web_url' => '' ));
+    $instance = wp_parse_args((array) $instance, array( 'title' => '', 'file_url' => '',  ));
     $title = $instance['title'];
-    $web_url = $instance['web_url'];
+    $file_url = $instance['file_url'];
 ?>
     <p><label for="<?php echo $this->get_field_id('title'); ?>">Title: <input class="widefat" id="<?php echo   $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo attribute_escape($title); ?>" /></label></p>
 
-    <p><label for="<?php echo $this->get_field_id('web_url'); ?>">Url of hours html output: <input class="widefat" id="<?php echo $this->get_field_id('web_url'); ?>" name="<?php echo $this->get_field_name('web_url'); ?>" type="text" value="<?php echo attribute_escape($web_url); ?>" /></label></p>
+    <p><label for="<?php echo $this->get_field_id('file_url'); ?>">Url of hours html output: <input class="widefat" id="<?php echo $this->get_field_id('file_url'); ?>" name="<?php echo $this->get_field_name('file_url'); ?>" type="text" value="<?php echo attribute_escape($file_url); ?>" /></label></p>
     
 <?php
   }
@@ -39,7 +39,7 @@ class Display_File_Widget extends WP_Widget
   {
     $instance = $old_instance;
     $instance['title'] = $new_instance['title'];
-    $instance['web_url'] = $new_instance['web_url'];
+    $instance['file_url'] = $new_instance['file_url'];
     return $instance;
   }
  
@@ -49,25 +49,25 @@ class Display_File_Widget extends WP_Widget
  
     echo $before_widget;
     $title = empty($instance['title']) ? '' : apply_filters('widget_title', $instance['title']);
-    $web_url = empty($instance['web_url']) ? '' : $instance['web_url'];
-    
-    if (!empty($title))
-      echo $before_title . $title . $after_title;; 
+    $file_url = empty($instance['file_url']) ? '' : $instance['file_url'];
 
-    if(!empty($web_url)) {
+    if(is_front_page()) {    
+       if (!empty($title))
+         echo $before_title . $title . $after_title;; 
 
-       $file = $web_url;
+       if(!empty($file_url)) {
 
-       $content = file_get_contents($file);
-       if (!empty($content))
-          echo $content;
-       else
-         echo "Widget could not read file contents. Please check the url in Appearance->Widgets ";
+          $content = file_get_contents($file_url);
+          if (!empty($content))
+             echo $content;
+          else
+            echo "Widget could not read file contents. Please check the url in Appearance->Widgets ";
       
-       echo $after_widget;
-    }else {
-       echo "Please set the file with html output of the hours.";
-    }
+          echo $after_widget;
+       }else {
+          echo "Please set the file with html output of the hours.";
+       }
+    } // front page check close
   }
 }
 add_action( 'widgets_init', create_function('', 'return register_widget("Display_File_Widget");') );
