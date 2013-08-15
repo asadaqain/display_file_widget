@@ -12,7 +12,7 @@ class Display_File_Widget extends WP_Widget
 {
   function Display_File_Widget()
   {
-    $widget_ops = array('classname' => 'Display_File_Widget', 'description' => 'Output contents of a file via url');
+    $widget_ops = array('classname' => 'Display_File_Widget', 'description' => "Output contents of a file via url or local /path/to/file.");
     $this->WP_Widget('Display_File_Widget', 'Display File Widget', $widget_ops);
   }
  
@@ -24,13 +24,16 @@ class Display_File_Widget extends WP_Widget
    
   function form($instance)
   {
-    $instance = wp_parse_args((array) $instance, array( 'title' => '', 'file_url' => '',  ));
+    $instance = wp_parse_args((array) $instance, array( 'title' => '', 'file_url' => '', 'other_content' => '' ));
     $title = $instance['title'];
     $file_url = $instance['file_url'];
+    $other_content = $instance['other_content'];
 ?>
     <p><label for="<?php echo $this->get_field_id('title'); ?>">Title: <input class="widefat" id="<?php echo   $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo attribute_escape($title); ?>" /></label></p>
 
     <p><label for="<?php echo $this->get_field_id('file_url'); ?>">Url of hours html output: <input class="widefat" id="<?php echo $this->get_field_id('file_url'); ?>" name="<?php echo $this->get_field_name('file_url'); ?>" type="text" value="<?php echo attribute_escape($file_url); ?>" /></label></p>
+    
+    <p><label for="<?php echo $this->get_field_id('other_content'); ?>">Custom HTML Add-On: <textarea rows="4" cols="50" class="widefat" id="<?php echo $this->get_field_id('other_content'); ?>" name="<?php echo $this->get_field_name('other_content'); ?>" placeholder="Custom html or text here"><?php echo attribute_escape($other_content); ?></textarea></label></p>
     
 <?php
   }
@@ -40,6 +43,7 @@ class Display_File_Widget extends WP_Widget
     $instance = $old_instance;
     $instance['title'] = $new_instance['title'];
     $instance['file_url'] = $new_instance['file_url'];
+    $instance['other_content'] = $new_instance['other_content'];    
     return $instance;
   }
  
@@ -50,7 +54,8 @@ class Display_File_Widget extends WP_Widget
     echo $before_widget;
     $title = empty($instance['title']) ? '' : apply_filters('widget_title', $instance['title']);
     $file_url = empty($instance['file_url']) ? '' : $instance['file_url'];
-
+    $other_content = empty($instance['other_content']) ? '' : $instance['other_content'];
+    
     if(is_front_page()) {    
        if (!empty($title))
          echo $before_title . $title . $after_title;; 
@@ -58,10 +63,13 @@ class Display_File_Widget extends WP_Widget
        if(!empty($file_url)) {
 
           $content = file_get_contents($file_url);
-          if (!empty($content))
+          if (!empty($content)) {
              echo $content;
-          else
-            echo "Widget could not read file contents. Please check the url in Appearance->Widgets ";
+             
+             if (!empty($other_content)) 
+                echo $other_content;
+          }else
+             echo "Widget could not read file contents. Please check the url in Appearance->Widgets ";
       
           echo $after_widget;
        }else {
